@@ -1,11 +1,17 @@
 //load web3
 export const LOAD_BC_REQUEST = "LOAD_BC_REQUEST";
-export const LOAD_BC_SUCCESS = "LOAD_BC_SUCCESS";
+export const LOAD_BC_ISLISTENING = "LOAD_BC_ISLISTENING";
 export const LOAD_BC_FAIL = "LOAD_BC_FAIL";
 
 //load address
 export const LOAD_ADDRESSE = "LOAD_ADDRESSE";
 
+//Load contract
+export const LOAD_CONTRACT = "LOAD_CONTRACT";
 
-// export const GET_TODOS = "GET_TODOS";
+//Todo count TODO_COUNT
+export const TODO_COUNT = "TODO_COUNT";
+
+//read todos
+export const READ_TODOS = "READ_TODOS";
 

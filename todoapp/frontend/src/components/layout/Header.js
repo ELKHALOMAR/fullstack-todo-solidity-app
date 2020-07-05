@@ -1,21 +1,50 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux';
 import Proptypes from 'prop-types';
-import {fetchData, LoadAddress} from '../../actions/todos';
+import {ReadTodos,TodoCount, LoadBC_FAIL, fetchData, LoadAddress, LoadBC_isListening, LoadBC_Request} from '../../actions/todos';
+import todos from '../../reducers/todos';
 export class Header extends Component {
+    constructor(props) {
+      super(props)
     
+      this.state = {
+        TDcount : 0
+      }
+    }
+    
+
+
   componentDidMount() {
 
     this.props.fetchData();
     
-      
+    // LoadBC_isListening
+    //  LoadBC_Request
+
+
+    //   this.props.ReadTodos()
+
   
  }
- componentDidUpdate(x, y){
+//  shouldComponentUpdate(){
+//    console.log(!this.props.complededLoop)
+//   return !this.props.complededLoop
+
+//  }
+ componentDidUpdate(){
+if(this.props.connected){
+  this.props.TodoCount()
+  this.props.LoadAddress()
  
-  this.props.LoadAddress();
+
+}else{
+  console.log('failed', this.props.LoadBC_isListening())
+} 
+
 
  }
+
+
  
   render() {
 
@@ -32,10 +61,11 @@ export class Header extends Component {
         <a className="nav-link" href="#">{this.props.Myaddress} <span className="sr-only">(current)</span></a>
       </li>
       <li className="nav-item">
-        <a className="nav-link" href="#">Features</a>
+        <a className="nav-link" href="#">{this.props.TDcount}</a>
       </li>
       <li className="nav-item">
-        <a className="nav-link" href="#">Pricing</a>
+        <a className="nav-link" href="#">{this.props.connected?<h5 style ={{color: "green"}}>connected</h5>:<h1 style={{color: "red"}}>disconnected</h1>}
+</a>
       </li>
       <li className="nav-item dropdown">
         <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -57,7 +87,12 @@ export class Header extends Component {
 const mapStateToProps = state => ({
 
   web3: state.todos.web3,
-  Myaddress: state.todos.Myaddress
+  Myaddress: state.todos.Myaddress,
+  connected: state.todos.connected,
+  TDaddress: state.todos.TDaddress,
+  TDcount: state.todos.TDcount,
+  todos: state.todos.todos,
+  complededLoop: state.todos.complededLoop
 
 })
-export default connect(mapStateToProps, {fetchData, LoadAddress})(Header)
+export default connect(mapStateToProps, {ReadTodos, TodoCount, LoadBC_FAIL, fetchData, LoadAddress, LoadBC_isListening, LoadBC_Request})(Header)

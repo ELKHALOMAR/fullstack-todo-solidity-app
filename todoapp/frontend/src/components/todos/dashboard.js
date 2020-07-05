@@ -1,12 +1,54 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, Component } from 'react';
 import Form from './form';
+import {connect} from 'react-redux';
+import {ReadTodos} from '../../actions/todos';
 import Todos from './todos';
 
-export default function Dashboard() {
-    return (
-     <Fragment>
+class Dashboard extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             todos:[]
+        }
+    }
+    
+    
+    componentDidMount(){
+        this.props.ReadTodos()
+    
+    }
+    componentDidUpdate(x,y){
+    if(this.props.TDcount !== x.TDcount){
+        this.props.ReadTodos();
+    }
+    if(this.props.todos.length !== x.todos.length){
+    
+        this.setState({todos:this.props.todos})
+    }
+    console.log('state', this.state.todos[0])
+    }
+    
+    render() {
+        return (
+             <Fragment>
             <Form/>
-            <Todos/>
+            <Todos todo={this.props.todos}/>
             </Fragment>
-    )
+        );
+    }
 }
+
+const mapStateToProps = state => ({
+
+    web3: state.todos.web3,
+    Myaddress: state.todos.Myaddress,
+    connected: state.todos.connected,
+    TDaddress: state.todos.TDaddress,
+    TDcount: state.todos.TDcount,
+    todos: state.todos.todos,
+    complededLoop: state.todos.complededLoop
+  
+  })
+
+export default connect(mapStateToProps, {ReadTodos})(Dashboard);

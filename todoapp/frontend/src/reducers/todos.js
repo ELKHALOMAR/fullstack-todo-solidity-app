@@ -1,11 +1,15 @@
-import {LOAD_BC_REQUEST,LOAD_BC_SUCCESS, LOAD_BC_FAIL, LOAD_ADDRESSE} from '../actions/types.js';
-
+import {READ_TODOS, TODO_COUNT,LOAD_CONTRACT, LOAD_BC_REQUEST,LOAD_BC_ISLISTENING, LOAD_BC_FAIL, LOAD_ADDRESSE} from '../actions/types.js';
+import store from '../store';
 
 const initialState = {
-    connected:'',
+    connected:false,
     web3:'',
-    Myaddress:''
-
+    Myaddress:'',
+    todoContract:'',
+    TDaddress:'',
+    TDcount:'',
+    todos:[],
+    complededLoop: false
 }
 
 export default function(state = initialState, action){
@@ -24,7 +28,7 @@ export default function(state = initialState, action){
                 web3: action.web3
             }
 
-        case LOAD_BC_SUCCESS:
+        case LOAD_BC_ISLISTENING:
             return{
                 ...state,
                 connected: action.connected
@@ -32,7 +36,7 @@ export default function(state = initialState, action){
         case LOAD_BC_FAIL:
             return{
                 ...state,
-                data: 'error'
+                connected: false
             }         
                 
         case LOAD_ADDRESSE:
@@ -40,7 +44,24 @@ export default function(state = initialState, action){
                 ...state,
                 Myaddress:action.Myaddress
             }
-            
+        case LOAD_CONTRACT:
+            return{
+                ...state,
+                todoContract:action.todoContract,
+                TDaddress: action.TDaddres
+                
+            }
+        case TODO_COUNT:
+            return{
+                ...state,
+                TDcount: action.TDcount
+            }
+        case READ_TODOS:
+            return{
+                ...state,
+                todos: action.todos,
+                complededLoop:action.complededLoop
+            }
         default:
             return state;
     }
