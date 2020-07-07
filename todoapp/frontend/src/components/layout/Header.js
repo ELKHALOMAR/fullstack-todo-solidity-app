@@ -17,7 +17,9 @@ export class Header extends Component {
   componentDidMount() {
 
     this.props.fetchData();
-    
+    this.props.TodoCount();
+    this.props.LoadAddress()
+
     // LoadBC_isListening
     //  LoadBC_Request
 
@@ -31,16 +33,13 @@ export class Header extends Component {
 //   return !this.props.complededLoop
 
 //  }
- componentDidUpdate(){
-if(this.props.connected){
+ componentDidUpdate(x, y){
+// if(this.props.TDcount !== x.TDcount){
   this.props.TodoCount()
-  this.props.LoadAddress()
- 
 
-}else{
-  console.log('failed', this.props.LoadBC_isListening())
-} 
-
+// }
+// if(this.props.Myaddress !== x.Myaddress)
+this.props.LoadAddress()
 
  }
 
@@ -84,6 +83,7 @@ if(this.props.connected){
     }
 }
 
+
 const mapStateToProps = state => ({
 
   web3: state.todos.web3,
@@ -92,7 +92,9 @@ const mapStateToProps = state => ({
   TDaddress: state.todos.TDaddress,
   TDcount: state.todos.TDcount,
   todos: state.todos.todos,
-  complededLoop: state.todos.complededLoop
+  complededLoop: state.todos.complededLoop,
+  todoContract:state.todos.todoContract
+  
 
 })
 export default connect(mapStateToProps, {ReadTodos, TodoCount, LoadBC_FAIL, fetchData, LoadAddress, LoadBC_isListening, LoadBC_Request})(Header)

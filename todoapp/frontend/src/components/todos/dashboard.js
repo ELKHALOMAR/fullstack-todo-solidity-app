@@ -16,23 +16,26 @@ class Dashboard extends Component {
     
     componentDidMount(){
         this.props.ReadTodos()
+
     
     }
     componentDidUpdate(x,y){
-    if(this.props.TDcount !== x.TDcount){
-        this.props.ReadTodos();
-    }
-    if(this.props.todos.length !== x.todos.length){
+    // if( x.TDcount!==this.props.TDcount ){
+    //     this.props.ReadTodos();
+    //     console.log('TDcount ', this.props.TDcount )
+
+    // }
+    // if(this.props.todos.length !== x.todos.length){
     
-        this.setState({todos:this.props.todos})
-    }
-    console.log('state', this.state.todos[0])
+    //     this.setState({todos:this.props.todos})
+    // }
+    // console.log('state', this.state)
     }
     
     render() {
         return (
              <Fragment>
-            <Form/>
+            <Form />
             <Todos todo={this.props.todos}/>
             </Fragment>
         );
@@ -47,7 +50,9 @@ const mapStateToProps = state => ({
     TDaddress: state.todos.TDaddress,
     TDcount: state.todos.TDcount,
     todos: state.todos.todos,
-    complededLoop: state.todos.complededLoop
+    complededLoop: state.todos.complededLoop,
+    todoContract:state.todos.todoContract
+    
   
   })
 

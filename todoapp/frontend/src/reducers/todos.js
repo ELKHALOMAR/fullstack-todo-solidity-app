@@ -1,4 +1,4 @@
-import {READ_TODOS, TODO_COUNT,LOAD_CONTRACT, LOAD_BC_REQUEST,LOAD_BC_ISLISTENING, LOAD_BC_FAIL, LOAD_ADDRESSE} from '../actions/types.js';
+import {ADD_TODO, READ_TODOS, TODO_COUNT,LOAD_CONTRACT, LOAD_BC_REQUEST,LOAD_BC_ISLISTENING, LOAD_BC_FAIL, LOAD_ADDRESSE} from '../actions/types.js';
 import store from '../store';
 
 const initialState = {
@@ -48,7 +48,7 @@ export default function(state = initialState, action){
             return{
                 ...state,
                 todoContract:action.todoContract,
-                TDaddress: action.TDaddres
+                TDaddress: action.TDaddress
                 
             }
         case TODO_COUNT:
@@ -61,6 +61,11 @@ export default function(state = initialState, action){
                 ...state,
                 todos: action.todos,
                 complededLoop:action.complededLoop
+            }
+        case ADD_TODO:
+            return{
+                ...state,
+
             }
         default:
             return state;

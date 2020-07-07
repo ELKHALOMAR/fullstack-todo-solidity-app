@@ -15,3 +15,5 @@ export const TODO_COUNT = "TODO_COUNT";
 //read todos
 export const READ_TODOS = "READ_TODOS";
 
+//add todo 
+export const ADD_TODO = "ADD_TODO";
