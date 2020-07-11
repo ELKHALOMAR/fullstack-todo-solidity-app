@@ -1,4 +1,5 @@
-// import axios from "axios";
+import axios from "axios";
+// 0x5A8D0bce6C974d9D093367984308B09D437412D4 current contract address
 import {
   READ_TODOS,
   TODO_COUNT,
@@ -17,10 +18,14 @@ const contractABI = MyContract.abi;
 let web3;
 let todoContract;
 let count;
+let ethereum;
+let enabledWeb3;
 
 //LOAD_BC_request
-export const LoadBC_Request = () => (dispatch) => {
+export const LoadBC_Request = () => async (dispatch) => {
   web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+  ethereum = window.ethereum;
+  enabledWeb3 = await ethereum.enable();
 
   dispatch({
     type: LOAD_BC_REQUEST,
@@ -62,6 +67,7 @@ export const fetchData = () => {
 
 //LOAD_address
 export const LoadAddress = () => (dispatch) => {
+  // console.log('dAccount', web3.eth.defaultAccount)
   web3.eth
     .getAccounts()
     .then((response) => {
@@ -111,39 +117,46 @@ export const LoadContract = () => {
 };
 
 //Todos Count
-export let TodoCount = () => async (dispatch, getstate) =>   {
-   
+export let TodoCount = () => {  
+  return async function(dispatch, getstate){
+   console.log('bg1')
     let TDcount = await todoContract.methods.todos_lenght().call();
-    count = parseInt(TDcount);
+    console.log('bg2')
+
+    count =await parseInt(TDcount);
     dispatch({
       type: TODO_COUNT,
       TDcount: count,
     });
- b
-};
+
+}};
 
 //READ_TODOS
 export const ReadTodos = () => async (dispatch) => {
+
   let x = store.getState().todos.TDcount;
-  console.log("tfcount", x);
   let pointer;
   let n = [];
   for (let i = 1; i < x + 1; i++) {
     let fnum = i.toString();
     pointer = await todoContract.methods.readtodo(fnum).call();
+    if(pointer[0]!==""){
     n = [...n, pointer];
 
   }
+  // console.log('has_data', pointer)
+
+  }
+
   if((n.length !== (0)) && (x !==(null|undefined)) ) {
 
   dispatch({
     type:READ_TODOS,
     todos: n
   });
-  console.log('dispatched', 'n :',n.length, ', x: ',x);
+
 
 };
-
   // console.log('n', n);
 
   // console.log(store.getState().todos.todos)
@@ -152,28 +165,33 @@ export const ReadTodos = () => async (dispatch) => {
 //add todo
 
 export const AddTodo = (b) => {
-  console.log('getB1', count+1)
   return function(dispatch, getstate) {
   todoContract.methods.addtodo((count+1).toString(), b.toString()).send({from: '0xa81120f3EA0D76E04119B1dE8fb74DbDef31425F', gas: 1500000}).catch((error)=>{
-    ReadTodos()
-    console.log('getB2', count+1)
 
-    console.log(error)
+    console.log('AddTodo error', error)
   })
-  console.log('added')
   
 }}
 
-  // addTodo(b){
-  //   this.setState({loading: true});
-  //   this.todoContract.methods.addtodo((this.state.todocount+1).toString(), b.toString()).send({from: '0xa81120f3EA0D76E04119B1dE8fb74DbDef31425F', gas: 1500000})
-  //   .then((receipt) => {
-  //     console.log('receipt', receipt)
-  //       this.setState({
-  //           loading: false
-  //         });
-  //   }, (yo) => {
-  //     alert(yo.message)
-  //     this.setState({loading: false});
-  //   } )
-   
+// delete todo
+export const DeleteTodo = (b) => {
+  return function(dispatch, getstate) {
+
+ axios.get('/api/todostatus')
+ .then(res => {
+   console.log('res', res)
+ })
+ .catch(err => {
+   console.error(err); 
+ })
+  
+}}
+
+export const CompleteTodo = (b) =>{
+return function(dispatch, getstate) {
+  todoContract.methods.completetodo(b.toString()).send({from: '0xa81120f3EA0D76E04119B1dE8fb74DbDef31425F', gas: 1500000}).catch((error)=>{
+
+    console.log(error)
+  })
+  
+}}

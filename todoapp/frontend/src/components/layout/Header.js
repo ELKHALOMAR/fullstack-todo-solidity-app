@@ -8,39 +8,36 @@ export class Header extends Component {
       super(props)
     
       this.state = {
-        TDcount : 0
+        TDcount : ''
       }
     }
     
 
 
-  componentDidMount() {
+componentDidMount() {
 
     this.props.fetchData();
     this.props.TodoCount();
     this.props.LoadAddress()
 
-    // LoadBC_isListening
-    //  LoadBC_Request
 
-
-    //   this.props.ReadTodos()
-
-  
  }
-//  shouldComponentUpdate(){
-//    console.log(!this.props.complededLoop)
-//   return !this.props.complededLoop
-
-//  }
- componentDidUpdate(x, y){
-// if(this.props.TDcount !== x.TDcount){
+componentDidUpdate(x, y){
   this.props.TodoCount()
 
-// }
-// if(this.props.Myaddress !== x.Myaddress)
-this.props.LoadAddress()
+//  console.log('ThisProp_TDcount', this.props.TDcount,'PreviousProps_TDcount', x.TDcount,'State_TDcount', this.state.TDcount)
+  // this.props.TodoCount()
+  //  console.log('xx', this.props.TDcount, x.TDcount)
+if(this.props.TDcount !== x.TDcount ){
+this.setState({
+  TDcount:  this.props.TDcount
+})
+console.log('xx2', this.state.TDcount, x.TDcount)
 
+}
+// if(this.props.Myaddress !== x.Myaddress){
+// this.props.LoadAddress()
+// }
  }
 
 
@@ -60,7 +57,7 @@ this.props.LoadAddress()
         <a className="nav-link" href="#">{this.props.Myaddress} <span className="sr-only">(current)</span></a>
       </li>
       <li className="nav-item">
-        <a className="nav-link" href="#">{this.props.TDcount}</a>
+        <a className="nav-link" href="#">{this.state.TDcount}</a>
       </li>
       <li className="nav-item">
         <a className="nav-link" href="#">{this.props.connected?<h5 style ={{color: "green"}}>connected</h5>:<h1 style={{color: "red"}}>disconnected</h1>}

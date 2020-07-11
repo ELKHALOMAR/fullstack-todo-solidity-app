@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import {ReadTodos} from '../../actions/todos';
+import {ReadTodos, CompleteTodo} from '../../actions/todos';
 
 import {connect} from 'react-redux';
 
 export class Todos extends Component {
     constructor(props) {
         super(props)
-    
         this.state = {
-             todos:[]
+             todos:[],
+             TDcount:this.props.TDcount
+            //  length: this.props.todos.length
         }
     
     }
@@ -16,23 +17,25 @@ export class Todos extends Component {
         this.props.ReadTodos()
     }
 componentDidUpdate(x,y){
-    if(this.props.todo.length !== x.todo.length){
-    
-        this.setState({todos:this.props.todo})
-    }
+    if(this.props.TDcount!== x.TDcount){
+    this.props.ReadTodos()
+}
+// console.log(this.props.TDcount, x.TDcount)
 
-    console.log('todo',this.state.todos)
+    if(this.props.todos !== x.todos){
 
-    if( this.props.TDcount!==x.TDcount ){
-        this.props.ReadTodos();
-        console.log('TDcount ', this.props.TDcount )
-
-    }
-    if(this.props.todos.length !== x.todos.length){
-    
         this.setState({todos:this.props.todos})
     }
-    console.log('state', this.state)
+}
+
+handlechange = () =>{
+    console.log(' change made')
+}
+
+handleComplete = (arg) =>{
+    // e.preventDefault()
+    
+    this.props.CompleteTodo(arg)
 }
     render() {
         return (  
@@ -53,11 +56,11 @@ componentDidUpdate(x,y){
   {this.state.todos.map((task ,key) =>{
       return(
         <tr key = {key}>
-      <th scope="row">{key}</th>
+      <th scope="row">{key} | {task[3].toString()}</th>
       <td>{task[0].toString()}</td>
-      <td>{task[1].toString()}</td>
-      <td><button value="delete" className="btn btn-danger mb-2">delete</button></td>
-      <td><button value="completed"className="btn btn-primary mb-2">completed</button></td>
+      <td onChange = {() =>{this.handlechange()}}>{task[1].toString()}</td>
+      <td><button  value="delete" className ="btn btn-danger mb-2">delete</button></td>
+      <td><button onClick = {() =>{this.handleComplete(task[3].toString())}} value="completed"className="btn btn-primary mb-2">completed</button></td>
     </tr>
       )})}
 
@@ -84,6 +87,6 @@ componentDidUpdate(x,y){
       
       })
 
-export default connect(mapStateToProps, {ReadTodos})(Todos)
+export default connect(mapStateToProps, {ReadTodos, CompleteTodo})(Todos)
 
   

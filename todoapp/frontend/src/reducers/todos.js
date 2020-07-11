@@ -7,7 +7,7 @@ const initialState = {
     Myaddress:'',
     todoContract:'',
     TDaddress:'',
-    TDcount:'',
+    TDcount:0,
     todos:[],
     complededLoop: false
 }
